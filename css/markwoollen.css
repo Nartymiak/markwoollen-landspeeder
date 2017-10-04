@@ -166,7 +166,7 @@ a:hover
 
 .thumbTitle {
 	position: absolute;
-    font-size: 10px;
+    font-size: .625em;
     background-color: rgba(0,0,0,.66);
     padding:4px 0;
     text-align: center;
@@ -317,7 +317,7 @@ a:hover
 	color: #ffffff;
 	letter-spacing: 0px;
     font-family: 'arial', 'Verdana' , sans-serif;
-    font-size: 14px;
+    font-size: .875em;
     text-align: left;
     line-height: 1.25em;
 }
@@ -344,7 +344,7 @@ a:hover
 	margin:0;
 	padding: 12px 0;
     font-family: 'Conv_LondonBetween' , sans-serif;
-    font-size: 16px;
+    font-size: 1em;
     letter-spacing: 6px;
     cursor: pointer;
 }
@@ -373,7 +373,7 @@ a:hover
 	position:relative;
 	background-color: rgba(68, 72, 72, 1);
 	box-sizing:border-box;
-	font-size: 14px;
+	font-size: .875em;
     font-family: 'Conv_LondonBetween' , sans-serif;
     letter-spacing: 1px;
 }
@@ -381,7 +381,7 @@ a:hover
 #notableContentClose {
 	position: absolute;
     left: 97%;
-    font-size: 18px;
+    font-size: 1.125em;
     cursor: pointer;
 }
 
@@ -431,8 +431,8 @@ a:hover
 	border:10px solid transparent;
 	box-sizing:border-box;
 	z-index: 6;
-	font-size: 18px;
-	line-height: 24px;
+	font-size: 1.125em;
+	line-height: 1.5em;
 }
 
 #notableArticle b {
@@ -441,12 +441,12 @@ a:hover
 
 #notableArticle p {
 	text-indent: 10px;
-	margin:18px 0;
+	margin:1.125em 0;
 
 }
 
 #notableArticle .smaller {
-	font-size: 16px;
+	font-size: 1em;
 }
 
 #articleHeader {
@@ -503,6 +503,7 @@ a:hover
 
 #featuredAccolades .left {
 	width:20.202020202%;
+	height:100%;
 	float:left;
 }
 
@@ -513,6 +514,7 @@ a:hover
 	float:left;
 	height:100%;
 	text-align: center;
+	background-size: contain;
 }
 
 .featuredThumbWrapper {
@@ -521,11 +523,17 @@ a:hover
 	margin:0 auto;
 }
 
-#featuredAccolades .thumb {
+.featuredThumb {
 	height:28.515625%;
 	width:27.131782945%;
-	top:21.484375%;
+	top:32.03125%;
 	position: relative;
+	display: inline-block;
+	margin:0 12px;
+	box-sizing:border-box;
+	border: 1px solid #acacac;
+	cursor:pointer;
+	float:left;
 }
 
 #featuredAccolades .featuredThumbTitle {
@@ -534,12 +542,81 @@ a:hover
 	position:relative;
 }
 
-#accolades {
+#featuredAccolades .awardsKey {
+	background: url(../images/awards.gif);
+	background-size:contain;
+	background-repeat: no-repeat;
+	width:86%;
+	height:71.484375%;
+	top:27.34375%;
+	left:0;
+	position: relative;
+
+}
+
+ #featuredAccolades .awardImage {
+	position:absolute;
+	top:82.191780821%;
+	width:16.184971098%;
+	height:82.191780821%;
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+
+#accoladesBG {
 	top: 18.888888888%;
-	width:600%;
-	height:40.476190476%;
+	width:100%;
+	height:33.65079365%;
+	background: url(../images/accolades-bg.png);
+	background-size: contain;
+	position: relative;
+	z-index: 3;
+}
+
+#accolades {	
+	height: 100%;
+	overflow: scroll;
+	box-sizing:border-box;
+	padding:0 4.696969696%;
+	margin:0 auto;
+
+}
+
+#accoladesContainer {
+	padding:2.12% 0 0 0;
+	box-sizing:border-box;
+}
+
+#accolades .caption {
+	margin-top:9.433962264%;
+	top:100%;
+	height:50%;
+	position:relative;
+	display: block;
 	position:relative;
 }
+
+#accolades .awardImage {
+	position:absolute;
+	top:-9%;
+	width:20%;
+	height:109%;
+	background-repeat: no-repeat;
+	background-size: contain;
+
+}
+
+#accolades .thumbTitle {
+    font-size: .9em;
+    background-color: transparent;
+    padding:1% 0 0 0;
+    vertical-align: middle;
+    position: relative;
+	width:75%;
+	margin:0 auto;
+}
+
+
 
 @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait){
   #bgContainer, #videoContainer, #pageContainer  {
