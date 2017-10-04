@@ -1,4 +1,5 @@
-var fadeInterval = 1200;
+var fadeInterval = 1000;
+var scrollInterval = 800;
 var state = 'home';
 var thumbState = 'down';
 var viewPortWidth, containerWidth, thumbWidth, thumbHeight;
@@ -6,6 +7,8 @@ var windowWidth, windowHeight, ratio;
 var thumbUniqueID ='';
 var initialized = false;
 var currentSlide = 0;
+var eventQueue = [];
+var transitioning = false;
 
 function pageManager(){
 	
@@ -14,23 +17,29 @@ function pageManager(){
 	videoLogic();
 	navLogic();
 
-	window.onresize = scaleElements;
-
+	window.onresize = reload;
 }
 
-function beginAnimation(){
+function beginAnimation(callback){
 	
 	setTimeout(function(){
 		slideThumbsUp();
-		$('#beginBlack').animate({
-			'opacity': 0
-		}, fadeInterval, function(){
+		$('#beginBlack').animate({'opacity': 0}, fadeInterval, function(){
 			$('#beginBlack').css('display', 'none');
 		});
 	}, fadeInterval);
 
 	initialized = true;
+}
 
+function reload(){
+
+	var resizeTimer;
+
+  	clearTimeout(resizeTimer);
+  	resizeTimer = setTimeout(function() {
+    	window.location.reload(false);          
+  	}, 250); 
 }
 
 //thumbnails
@@ -50,26 +59,31 @@ function scaleElements(){
 		$('#nav ul').css('bottom',  px);
 	}
 
-		fontSize = Math.round(windowHeight * 0.02539682539);
-		s = fontSize.toString();
-		$('body').css('font-size', s+"px");
+	fontSize = Math.round(windowHeight * 0.02539682539);
+	s = fontSize.toString();
+	$('body').css('font-size', s+"px");
 
 	// thumbnails
 	thumbCount = $('.thumb').size();
-	viewPortWidth = windowWidth * .90606060608;
+	viewPortWidth = windowWidth * .88571428571;
 	// thumbnails equals (the container width - the total padding) / 5
-	thumbWidth = ($('#thumbnails').width() - 128)/5 ;
+	//thumbWidth = ($('#thumbnails').width() - 128)/5 ;
+	thumbWidth = viewPortWidth / 5;
+	containerWidth = thumbCount * thumbWidth;
+	thumbMargin = thumbWidth * .05649717514;
+	thumbWidth = thumbWidth - (thumbMargin * 2);
 	thumbHeight = windowHeight * .09730538922;
-	containerWidth = thumbCount * (thumbWidth + 30);
+
 	// set stuff
 	$('#thumbnails').css({
 		'width': viewPortWidth,
 		'padding': 0
-
 	});
 	$('.thumb').css({ 
 		'width' : thumbWidth,
-		'height' : thumbHeight
+		'height' : thumbHeight,
+		'margin-left': thumbMargin,
+		'margin-right': thumbMargin
 	});
 	$('#thumbnailsContainer').css({
 		'width': containerWidth
@@ -94,13 +108,8 @@ function thumbLogic(){
 		$.address.value('/trailers/' + $(this).attr("id"));
 	});
 
-	$('#thumbLeft').on('click', function(){
-		sidewaysScroll(true, $(this), $('#thumbnails'));
-	});
-
-	$('#thumbRight').on('click', function(){
-		sidewaysScroll(false, $(this), $('#thumbnails'));
-	});
+	// allows users to click and scroll
+	sidewaysScroll();
 }
 
 function videoLogic(){
@@ -115,9 +124,7 @@ function videoLogic(){
 				$('#videoContainer').css('display', 'none').empty();
 			}, fadeInterval);
 		}
-
 		$.address.value(state);
-
 	});
 
 	$('#videoContainer').on('click', '.links a', function(){
@@ -128,28 +135,52 @@ function videoLogic(){
 function navLogic(){
 
 	$.address.change(function(event){
-		
-		var trailerCheck = event.value.split('/');
 
-		if ((event.value === '/' || event.value === '/home') && initialized === false){
-			
-			beginAnimation();
-		
-		} else if(trailerCheck[1] === 'trailers'){
-			console.log('trailerCheck');
-			showVideo(trailerCheck[2], thumbUniqueID);
-			$('#beginBlack').css('opacity', 0);
+		var eventObj;
+		var trailerCheck;
 
-		} else {
-			showPage(event.value);
-			$('#beginBlack').css('opacity', 0);
+		eventQueue[0] = event;
+
+		if(transitioning !== true){
+
+			var arrloop = function(){
+
+				transitioning = true;
+				
+				eventObj = eventQueue.shift();
+				trailerCheck = eventObj.value.split('/');
+
+				if ((eventObj.value === '/' || eventObj.value === '/home') && initialized === false){			
+					beginAnimation();
+
+				} else if(trailerCheck[1] === 'trailers'){
+					showVideo(trailerCheck[2], thumbUniqueID, function(){
+						if(eventQueue.length === 0){
+							transitioning = false;
+						} else {
+							arrloop();
+						}
+					});
+					$('#beginBlack').css('opacity', 0);
+
+				} else {
+					showPage(eventObj.value, (function(){
+						if(eventQueue.length === 0){
+							transitioning = false;
+						} else {				
+							arrloop();
+						}
+					}));
+					$('#beginBlack').css('opacity', 0);
+				}
+			}
+			arrloop();
 		}
 	});
 
 	$("#nav li a").on('click', function(e){
 		e.preventDefault();
 		$.address.value($(this).attr('href'));
-
 	});
 
 	$("#pageContainer").on('click', '#profileSubNav a', function(e){
@@ -173,13 +204,13 @@ function navLogic(){
 	});
 }
 
-function openPage(){
-
+function openPage(callback){
 	$('#pageContainer').css({
 		'display': 'block',
 		'opacity': 1
 	});
 
+	// mark nav element selected
 	$('#nav ul li a').each(function(){
 		if($(this).attr('href') === state){
 			$(this).addClass('selected');
@@ -190,77 +221,78 @@ function openPage(){
 
 	toggleWorkNav();
 
-	if(state === 'notables'){
+	switch(state){
+		case 'notables':
+			panelsIn(true,true,function(){
+				pageBgSwap(function(){
+					showNotablesContent();
+					if(thumbState == 'up'){
+						slideThumbsDown();
+					}
+				});
+			});
+			break;
 
-		panelsIn(true,true,function(){
-			pageBgSwap(function(){
-				showNotablesContent();
+		case 'accolades':
+			panelsIn(false,false,function(){			
+				showAccoladesContent();
 				if(thumbState == 'up'){
 					slideThumbsDown();
 				}
 			});
-		});
-		
-	}else if(state === 'accolades'){
-		
-		panelsIn(false,false,function(){			
-			showAccoladesContent();
-			if(thumbState == 'up'){
-				slideThumbsDown();
-			}
-		});
+			break;
 
-	}else if(state === 'work' || state === 'more'){
-		
-		pageBgSwap(function(){
-			showWorkContent();
-			if(thumbState == 'up'){
-				slideThumbsDown();
-			}
-		});
-
-	}else if(state === 'design'){
-
-		panelsIn(true,true,function(){
+		case 'work':
+		case 'more':
 			pageBgSwap(function(){
-				showDesignContent(slideShow());
+				showWorkContent(function(){if(callback){callback();}});
+				if(thumbState == 'up'){
+					slideThumbsDown();
+				}
+			});
+			break;
+		case 'design':
+			panelsIn(true,true,function(){
+				pageBgSwap(function(){
+					showDesignContent(function(){
+						if(callback){callback();}
+						slideShow();
+					});
+					if(thumbState == 'down'){
+						slideThumbsUp();
+					}
+				});
+			});
+			break;
+		case 'home':
+			pageBgSwap(function(){
 				if(thumbState == 'down'){
 					slideThumbsUp();
 				}
 			});
-		});
-
-
-	}else if(state === 'home'){
-
-		pageBgSwap(function(){
-			if(thumbState == 'down'){
-				slideThumbsUp();
-			}
-		});
-
-	} else {
-		panelsIn(true,true,function(){
-			pageBgSwap(function(){
-				showContent();
-				if(thumbState == 'down'){
-					slideThumbsUp();
-				}
+			break;
+		default:
+			panelsIn(true,true,function(){
+				pageBgSwap(function(){
+					showContent(function(){if(callback){callback()}});
+					if(thumbState == 'down'){
+						slideThumbsUp();
+					}
+				});
 			});
-		});
+
 	}
 }
 
 function toggleWorkNav(){
 	
 	if(state === 'work' || state === 'design' || state === 'more'  ){
-		console.log(state);
+
 		if($('.workNav').css('opacity') !== 1){
 			$('.workNav').css('display', 'inline-block');
 			$('.workNav').animate({
 				'opacity': 1
 			}, fadeInterval);
-
 		}
 	} else {
 		if($('.workNav').css('opacity') !== 0){
@@ -268,49 +300,9 @@ function toggleWorkNav(){
 				'opacity': 0
 			},fadeInterval, function(){
 				$('.workNav').css('display', 'none');
-			});
-			
+			});		
 		}
 	}
-}
-
-function closePage(state){
-	
-	if(state === 'accolades' || state === 'work'  || state === 'more'){
-		panelsOut(function(){
-			fadeOutContent();
-		});
-	}else{
-		panelsOut(function(){
-			hideContent();
-		});
-	}
-}
-
-function resetPanels(callback){
-
-	$('#topSlide').css({
-		'top' : 0,
-		'left': windowWidth
-	});
-	$('#leftSlide').css({
-		'top' : windowHeight *-1,
-		'left': 0,
-		'opacity': 1
-	});
-	$('#bottomSlide').css({
-		'top' : windowHeight-$('#bottomSlide').height(),
-		'left': windowWidth *-1
-	});
-	$('#pageContent').css({
-		'opacity': 1,
-		'left': windowWidth
-	});
-
-
-
-	if(callback){callback();}
-
 }
 
 // animation function
@@ -325,7 +317,7 @@ function panelsIn(top,bottom,callback){
 	$('#leftSlide').animate({
 		'top': 0,
 	}, fadeInterval, function(){
-		if(callback){callback();}
+			if(callback){callback();}
 		}
 	);
 	
@@ -333,6 +325,19 @@ function panelsIn(top,bottom,callback){
 		$('#bottomSlide').animate({
 			'left': 0
 		}, fadeInterval);
+	}
+}
+
+function closePage(state, callback){
+	
+	if(state === 'accolades' || state === 'work'  || state === 'more'){
+		panelsOut(function(){
+			fadeOutContent(function(){callback()});
+		});
+	}else{
+		panelsOut(function(){
+			hideContent(function(){callback()});
+		});
 	}
 }
 
@@ -361,12 +366,41 @@ function panelsOut(callback){
 
 }
 
+function hideContent(callback){
+	$('#pageContent').animate({
+		'left': windowWidth,
+		'opacity': 0
+	}, fadeInterval, function(){
+		resetPanels();
+		$('#pageContent').css('opacity', 1);
+		if(callback){callback();}
+	});
+}
+
+function fadeOutContent(callback){
+	$('#pageContent').animate({
+		'opacity': 0
+	}, fadeInterval, function(){
+		resetPanels();
+		if(callback){callback();}
+	});
+}
+
+function resetPanels(callback){
+
+	$('#topSlide').css({'top' : 0, 'left': windowWidth});
+	$('#leftSlide').css({'top' : windowHeight *-1,'left': 0,'opacity': 1});
+	$('#bottomSlide').css({'top' : windowHeight-$('#bottomSlide').height(), 'left': windowWidth *-1});
+	$('#pageContent').css({'opacity': 1, 'left': windowWidth});
+
+	if(callback){callback();}
+}
+
 function pageBgSwap(callback){
 	
 	$('#pageBackground').css({
 		'opacity': 0,
 		'background-image': 'url("images/backgrounds/'+state+'.jpg")',
-
 	}).animate({
 		'opacity': 1
 	}, fadeInterval, function(){
@@ -384,9 +418,7 @@ function showContent(callback){
 		'top': $('#topSlide').height()
 	});
 
-	$('#pageContent').css({
-		'background-color': 'rgba(126, 129, 129, 1)',
-	});
+	$('#pageContent').css({'background-color': 'rgba(126, 129, 129, 1)'});
 	
 	$('#pageContent').animate({
 		'left': $('#leftSlide').width()
@@ -413,28 +445,13 @@ function showDesignContent(callback){
 	}, fadeInterval, function(){
 		if(callback){callback();}
 	});
-}
 
-function hideContent(callback){
-	$('#pageContent').animate({
-		'left': windowWidth,
-		'opacity': 0
-	}, fadeInterval, function(){
-		resetPanels();
-		$('#pageContent').css('opacity', 1);
+	$('#playReel').on('click', function(e){
+		e.preventDefault();
+		thumbID = $(this).attr("data");
+		thumbUniqueID = $(this).attr("href");
+		$.address.value('/trailers/' + $(this).attr("data"));
 	});
-
-	if(callback){callback();}
-}
-
-function fadeOutContent(callback){
-	$('#pageContent').animate({
-		'opacity': 0
-	}, fadeInterval, function(){
-		resetPanels();
-	});
-
-	if(callback){callback();}
 }
 
 function showNotablesContent(){
@@ -468,48 +485,29 @@ function showAccoladesContent(){
 		'height': windowHeight
 	});
 
-	$('.awardsKey').css({
-		'opacity': 0
+	$('#accolades').css({'width': viewPortWidth,'padding': 0});
+	$('#accoladesContainer').css({'width': accoContainerWidth});
+	$('.awardsKey').css({'opacity': 0});
+	$('#featuredAccolades').css({'top': windowHeight});
+	$('.thumb').css({'width' : thumbWidth,'height' : thumbHeight});
+
+	// chained animations
+	$('#pageContent').animate({'top': 0}, fadeInterval, function(){
+		$('#featuredAccolades').animate({'top': windowHeight * 0.18888888888}, fadeInterval, function(){
+			$('.awardsKey').animate({'opacity': 1}, fadeInterval);
+		});
 	});
 
-	$('#featuredAccolades').css({
-		'top': windowHeight
+	// click on thumb
+	$('.featuredThumb').on('click', function(e){
+		e.preventDefault();
+		thumbID = $(this).attr("id");
+		thumbUniqueID = $(this).attr("data");
+		$.address.value('/trailers/' + $(this).attr("id"));
 	});
-
-	$('#pageContent').animate({
-		'top': 0
-	}, fadeInterval);
-
-	setTimeout(function(){
-		$('.awardsKey').animate({
-			'opacity': 1
-		}, fadeInterval);
-	},fadeInterval * 2);
-
-	setTimeout(function(){
-		$('#featuredAccolades').animate({
-			'top': windowHeight * 0.18888888888
-		}, fadeInterval);
-	},fadeInterval);
-
-
-	$('#accolades').css({
-		'width': viewPortWidth,
-		'padding': 0
-	});
-
-	$('.thumb').css({ 
-		'width' : thumbWidth,
-		'height' : thumbHeight
-	});
-
-	$('#accoladesContainer').css({
-		'width': accoContainerWidth
-	});
-
 }
 
-function showWorkContent(){
+function showWorkContent(callback){
 	var workThumbCount = $('#workContent').attr("data");
 	var workPageCount = Math.ceil(workThumbCount/15);
 
@@ -526,7 +524,10 @@ function showWorkContent(){
 
 	$('#pageContent').animate({
 		'top': 0
-	}, fadeInterval);
+	}, fadeInterval, function(){
+		workScroll();
+		if(callback){callback()};
+	});
 
 }
 
@@ -550,14 +551,11 @@ function hideArticle(){
 		$(this).css({
 			'top': windowHeight
 		});
-
 	});
 }
 
 function slideThumbsUp(callback){
-	$('#thumbnailsContainer').animate({
-		'top': 0
-	}, fadeInterval, function(){
+	$('#thumbnailsContainer').animate({'top': 0}, fadeInterval, function(){
 		if(callback){callback();}
 	});
 	$('#thumbnails').css({'visibility': 'visible'});
@@ -565,14 +563,11 @@ function slideThumbsUp(callback){
 }
 
 function slideThumbsDown(callback){
-	$('#thumbnailsContainer').animate({
-		'top': 136
-	}, fadeInterval, function(){
+	$('#thumbnailsContainer').animate({'top': 136}, fadeInterval, function(){
 		$('#thumbnails').css({'visibility': 'hidden'});
 		if(callback){callback();}
 	});
-	thumbState = 'down';
-	
+	thumbState = 'down';	
 }
 
 function slideShow() {
@@ -596,177 +591,196 @@ function slideShow() {
 	}, fadeInterval);
 }
 
-function sidewaysScroll(left, obj, parent){
-	var leftPos;
-	var scrollWidth = parent[0].getBoundingClientRect().width;
-
-	console.log(scrollWidth);
-
-	if(left === true){
-		scrollWidth = scrollWidth * -1;
-	}
+function sidewaysScroll(){
+	var thumbpoints = [];
+	var thumbcurrentPage = 0;
+	var thumbposCount = 0;
 	
-	leftPos = parent.scrollLeft();
-   
-   	parent.animate({
-        scrollLeft: leftPos + scrollWidth
-    }, 800);
+	$('.thumb').each(function(){
+		
+		if(thumbposCount % 5=== 0){
+			thumbpoints.push($(this).position().left);
+		}
+		thumbposCount ++;
+	});
+
+	$('#thumbLeft').on('click', function(){
+		if(thumbcurrentPage !== 0){
+			thumbcurrentPage --;
+			$('#thumbnails').animate({
+        		scrollLeft: thumbpoints[thumbcurrentPage]
+   			}, scrollInterval);
+		}
+	});
+
+	$('#thumbRight').on('click', function(){
+		if(thumbcurrentPage !== thumbpoints.length){
+			thumbcurrentPage ++;
+			$('#thumbnails').animate({
+        		scrollLeft: thumbpoints[thumbcurrentPage]
+   			}, scrollInterval);
+		}
+	});
+
+	$('#thumbnails').scroll(function(){
+		if( document.getElementById('thumbnails').scrollLeft > thumbpoints[thumbcurrentPage]){
+			thumbcurrentPage ++;
+		}
+		if( document.getElementById('thumbnails').scrollLeft < thumbpoints[thumbcurrentPage-1]){
+			thumbcurrentPage --;
+		}
+	});
 }
 
-function showVideo(id, uniqueID){
+function workScroll(){
+	var points = [];
+	var currentPage = 0;
+	var scrollTimer;
+	
+	$('.workPage').each(function(){
+		points.push($(this).offset().left);
+	});
 
-		// the server request
+	$('#workLeftScroll').on('click', function(){
+		if(currentPage !== 0){
+			currentPage --;
+			$('#workContent').animate({
+        		scrollLeft: points[currentPage]
+   			}, scrollInterval);
+		}
+	});
+
+	$('#workRightScroll').on('click', function(){
+		if(currentPage !== points.length){
+			currentPage ++;
+			$('#workContent').animate({
+        		scrollLeft: points[currentPage]
+   			}, scrollInterval);
+		}
+	});
+
+	$('#workLeftScroll').hover(function(){
+		if(currentPage !== 0){
+			$('#workContent').animate({
+        		scrollLeft: points[currentPage]-thumbWidth/2
+   			}, scrollInterval/2);
+		}
+	},function(){
+		if(currentPage !== 0){
+			$('#workContent').animate({
+        		scrollLeft: points[currentPage]
+   			}, scrollInterval/2);
+		}
+	});
+
+	$('#workRightScroll').hover(function(){
+		if(currentPage !== points.length){
+			$('#workContent').animate({
+        		scrollLeft: points[currentPage]+thumbWidth/2
+   			}, scrollInterval/2);
+		}
+	},function(){
+		if(currentPage !== points.length){
+			$('#workContent').animate({
+        		scrollLeft: points[currentPage]
+   			}, scrollInterval/2);
+		}
+	});
+}
+
+function showVideo(id, uniqueID, callback){
+
+	$.ajax({
+	    url: "fns/ajxShowVideo.php",
+	    data: {	"uniqueID": uniqueID,
+				"id": id	
+		},
+	    type: "POST",
+	    success: function( text ) {
+
+	    	$('#videoContainer').empty();
+	    	$('#videoContainer').html( text ); 
+	    	$('#videoContainer').css('display', 'block');
+	    	$('#videoContainer').animate({'opacity': 1}, fadeInterval);
+	    	$('.links a').each(function(){
+	    		if($(this).attr("id") == id){
+	    			$(this).css('border-bottom', '1px solid #d1d1d1');
+	    		}
+	    	});
+
+	    	$(function(){
+			    $("#video").bind("loadedmetadata", function () {
+			        var width = this.videoWidth;
+			        var height = this.videoHeight;			      
+			    });
+			});
+	    },
+	    error: function( xhr, status, errorThrown ) {
+	        alert( "Sorry, there was a problem!" );
+	        console.log( "Error: " + errorThrown );
+	        console.log( "Status: " + status );
+	        console.dir( xhr );
+	    },
+	    complete: function( xhr, status ) {
+	    	if(callback){callback()}
+	    }
+	});
+}
+
+function showPage(page, callback){
+
+	page = page.replace('/', '');
+	// check to see if not already there (may happen when closing a trailer)
+	if(state !== page){
+
 		$.ajax({
-
-		    // The URL for the request
-		    url: "fns/ajxShowVideo.php",
-		 
-		    // The data to send (will be converted to a query string)
-		    data: {	"uniqueID": uniqueID,
-					"id": id	
-				},
-
-		    // Whether this is a POST or GET request
+		    url: "fns/ajxPage.php",
+		    data: {	"page": page},
 		    type: "POST",
-		 
-		    // Code to run if the request succeeds;
-		    // the response is passed to the function
 		    success: function( text ) {
 
-		    	$('#videoContainer').empty();
-
-		    	$('#videoContainer').html( text ); 
-
-		    	$('#videoContainer').css('display', 'block');
-		    	$('#videoContainer').animate({'opacity': 1}, fadeInterval);
-		    	$('.links a').each(function(){
-		    		if($(this).attr("id") == id){
-		    			$(this).css('border-bottom', '1px solid #d1d1d1');
-		    		}
-		    	});
-
-		    	$(function () {
-
-				    $("#video").bind("loadedmetadata", function () {
-				        var width = this.videoWidth;
-				        var height = this.videoHeight;
-						      
-				    });
-
-				});
-
+			    closePage(state, function(){
+					state = page;
+				    openPage(function(){if(callback){callback();}});
+				    $('#pageContent').empty();
+					$('#pageContent').html( text );
+			    });		    	
 		    },
-		 
-		    // Code to run if the request fails; the raw request and
-		    // status codes are passed to the function
-		    error: function( xhr, status, errorThrown ) {
+			error: function( xhr, status, errorThrown ) {
 		        alert( "Sorry, there was a problem!" );
-		        console.log( "Error: " + errorThrown );
-		        console.log( "Status: " + status );
-		        console.dir( xhr );
-		    },
-		 
-		    // Code to run regardless of success or failure
-		    complete: function( xhr, status ) {
-		        //alert( "The request is complete!" );
+		        console.log( "Error: " + errorThrown + " Status: " + status + "xhr: " + xhr);
+			},
+			complete: function( xhr, status ) {
 		    }
 		});
-
-}
-
-function showPage(page){
-
-		page = page.replace('/', '');
-
-		// check to see if not already there (may happen when closing a trailer)
-		if(state !== page){
-
-			// the server request
-			$.ajax({
-
-			    // The URL for the request
-			    url: "fns/ajxPage.php",
-			 
-			    // The data to send (will be converted to a query string)
-			    data: {	"page": page
-					},
-
-			    // Whether this is a POST or GET request
-			    type: "POST",
-			 
-			    // Code to run if the request succeeds;
-			    // the response is passed to the function
-			    success: function( text ) {
-
-
-			    		closePage(state);
-				    	state = page;
-				    	setTimeout(function(){
-				    		$('#pageContent').empty();
-				    		$('#pageContent').html( text );
-				    		openPage();
-				    	}, fadeInterval);
-				    	
-			    },
-			 
-			    // Code to run if the request fails; the raw request and
-			    // status codes are passed to the function
-			    error: function( xhr, status, errorThrown ) {
-			        alert( "Sorry, there was a problem!" );
-			        console.log( "Error: " + errorThrown );
-			        console.log( "Status: " + status );
-			        console.dir( xhr );
-			    },
-			 
-			    // Code to run regardless of success or failure
-			    complete: function( xhr, status ) {
-			        //alert( "The request is complete!" );
-			    }
-			});
-		}
+	} else {
+		if(callback){callback();}
+	}
 }
 
 function showNotableArticle(id){
 
-		// the server request
-		$.ajax({
+	$.ajax({
+	    url: "fns/ajxPage.php",
+	    data: {	"page": 'notableArticle',
+	    		"id": id
+		},
+	    type: "POST",
+	    success: function( text ) {
 
-		    // The URL for the request
-		    url: "fns/ajxPage.php",
-		 
-		    // The data to send (will be converted to a query string)
-		    data: {	"page": 'notableArticle',
-		    		"id": id
-				},
-
-		    // Whether this is a POST or GET request
-		    type: "POST",
-		 
-		    // Code to run if the request succeeds;
-		    // the response is passed to the function
-		    success: function( text ) {
-
-		    	setTimeout(function(){
-		    		showArticle();
-					$('#notableArticle').empty();
-			    	$('#notableArticle').html( text );
-		    	}, fadeInterval);
-
-		    },
-		 
-		    // Code to run if the request fails; the raw request and
-		    // status codes are passed to the function
-		    error: function( xhr, status, errorThrown ) {
-		        alert( "Sorry, there was a problem!" );
-		        console.log( "Error: " + errorThrown );
-		        console.log( "Status: " + status );
-		        console.dir( xhr );
-		    },
-		 
-		    // Code to run regardless of success or failure
-		    complete: function( xhr, status ) {
-		        //alert( "The request is complete!" );
-		    }
-		});
-
+	    	setTimeout(function(){
+	    		showArticle();
+				$('#notableArticle').empty();
+		    	$('#notableArticle').html( text );
+	    	}, fadeInterval);
+	    },
+	    error: function( xhr, status, errorThrown ) {
+	        alert( "Sorry, there was a problem!" );
+	        console.log( "Error: " + errorThrown );
+	        console.log( "Status: " + status );
+	        console.dir( xhr );
+	    },
+	    complete: function( xhr, status ) {
+	    }
+	});
 }
