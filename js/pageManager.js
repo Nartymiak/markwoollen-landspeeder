@@ -1,16 +1,17 @@
 var fadeInterval = 1200;
 var state = 'home';
 var thumbState = 'down';
-var thumbCount, viewPortHeight, containerWidth, thumbWidth, thumbHeight;
+var viewPortHeight, viewPortWidth, containerWidth, thumbWidth, thumbHeight;
+var windowWidth, windowHeight;
 
 function pageManager(){
-	thumbslider();
+	scaleElements();
 	thumbLogic();
 	videoLogic();
 	navLogic();
 	beginAnimation();
 
-	window.onresize = thumbslider;
+	window.onresize = scaleElements;
 
 }
 
@@ -21,24 +22,36 @@ function beginAnimation(){
 		$('#beginBlack').animate({
 			'opacity': 0
 		}, fadeInterval, function(){
-			$('#beginBlack').css('display', 'none')
+			$('#beginBlack').css('display', 'none');
 		});
 	}, fadeInterval);
 }
 
 //thumbnails
-function thumbslider(){
-	
+function scaleElements(){
+
+	var thumbCount;
+
+	windowWidth = window.innerWidth;
+	windowHeight = window.innerHeight;
+
+	var fontSize = Math.round(windowHeight * 0.02539682539);
+	var s = fontSize.toString();
+
+	$('body').css('font-size', s+"px");
+
+	// thumbnails
 	thumbCount = $('.thumb').size();
-	viewPortWidth = window.innerWidth * .90606060608;
+	viewPortWidth = windowWidth * .90606060608;
 	// thumbnails equals (the container width - the total padding) / 5
 	thumbWidth = ($('#thumbnails').width() - 128)/5 ;
-	thumbHeight = window.innerHeight * .09730538922;
+	thumbHeight = windowHeight * .09730538922;
 	containerWidth = thumbCount * (thumbWidth + 30);
-
 	// set stuff
-	$('#thumbnails').css('width', viewPortWidth);
-	$('#thumbnails').css('padding', 0);
+	$('#thumbnails').css({
+		'width': viewPortWidth,
+		'padding': 0
+	});
 	$('.thumb').css({ 
 		'width' : thumbWidth,
 		'height' : thumbHeight
@@ -58,7 +71,7 @@ function thumbLogic(){
 		function(){$(this).children().css('display', 'none')}
 	);
 
-	$('.thumb').on('click', function(){
+	$('body').on('click', '.thumb', function(){
 		showVideo($(this).attr("id"), $(this).attr("data"));
 	});
 }
@@ -107,6 +120,7 @@ function navLogic(){
 	$('#pageContent').on('click', '#notableContentClose', function(e){
 		e.preventDefault();
 		showPage('profile');
+		console.log('click');
 	});
 }
 
@@ -116,7 +130,6 @@ function openPage(){
 		'display': 'block',
 		'opacity': 1
 	});
-
 
 	if(state === 'notables'){
 
@@ -130,6 +143,15 @@ function openPage(){
 		});
 		
 	}else if(state === 'accolades'){
+		
+		panelsIn(false,false,function(){			
+			showAccoladesContent();
+			if(thumbState == 'up'){
+				slideThumbsDown();
+			}
+		});
+
+	}else if(state === 'work'){
 		
 		panelsIn(false,false,function(){
 			pageBgSwap(function(){
@@ -152,25 +174,36 @@ function openPage(){
 	}
 }
 
-function closePage(){
+function closePage(state){
 	
-	panelsOut(function(){
-		hideContent();
-	});
+	if(state == 'accolades'){
+		panelsOut(function(){
+			fadeOutContent();
+		});
+	}else{
+		panelsOut(function(){
+			hideContent();
+		});
+	}
 }
 
 function resetPanels(callback){
+
 	$('#topSlide').css({
 		'top' : 0,
-		'left': window.innerWidth
+		'left': windowWidth
 	});
 	$('#leftSlide').css({
-		'top' : window.innerHeight *-1,
+		'top' : windowHeight *-1,
 		'left': 0
 	});
 	$('#bottomSlide').css({
-		'top' : window.innerHeight-$('#bottomSlide').height(),
-		'left': window.innerWidth *-1
+		'top' : windowHeight-$('#bottomSlide').height(),
+		'left': windowWidth *-1
+	});
+	$('#pageContent').css({
+		'opacity': 1,
+		'left': windowWidth
 	});
 
 	if(callback){callback();}
@@ -193,7 +226,6 @@ function panelsIn(top,bottom,callback){
 		}
 	);
 	
-
 	if(bottom){
 		$('#bottomSlide').animate({
 			'left': 0,
@@ -210,13 +242,13 @@ function panelsOut(callback){
 	});
 
 	$('#leftSlide').animate({
-		'left': window.innerWidth,
+		'left': windowWidth,
 	}, fadeInterval, function(){
 		resetPanels();
 	});
 
 	$('#bottomSlide').animate({
-		'top': window.innerHeight,
+		'top': windowHeight,
 	}, fadeInterval, function(){
 		resetPanels();
 	});
@@ -241,11 +273,15 @@ function pageBgSwap(callback){
 
 function showContent(callback){
 
+	// content elements
 	$('#pageContent').css({
-		'height': window.innerHeight - ($('#topSlide').height() + $('#bottomSlide').height()),
-		'width': window.innerWidth - $('#leftSlide').width(),
-		'background-color': 'rgba(126, 129, 129, 1)',
+		'height': windowHeight - ($('#topSlide').height() + $('#bottomSlide').height()),
+		'width': windowWidth - $('#leftSlide').width(),
 		'top': $('#topSlide').height()
+	});
+
+	$('#pageContent').css({
+		'background-color': 'rgba(126, 129, 129, 1)',
 	});
 	
 	$('#pageContent').animate({
@@ -257,7 +293,7 @@ function showContent(callback){
 
 function hideContent(callback){
 	$('#pageContent').animate({
-		'left': window.innerWidth,
+		'left': windowWidth,
 		'opacity': 0
 	}, fadeInterval, function(){
 		if(callback){callback();}
@@ -266,14 +302,24 @@ function hideContent(callback){
 
 }
 
+function fadeOutContent(callback){
+	$('#pageContent').animate({
+		'opacity': 0
+	}, fadeInterval, function(){
+		resetPanels();
+	});
+
+	if(callback){callback();}
+}
+
 function showNotablesContent(){
 	var top = $('#pageContent').position().top;
 	
 	$('#notableContentClose').css({'top': -top + 18});
 	$('#pageContent').css({
-		'top': window.innerHeight,
+		'top': windowHeight,
 		'left': 0,
-		'width': window.innerWidth
+		'width': windowWidth
 	});
 
 	$('#pageContent').animate({
@@ -283,20 +329,57 @@ function showNotablesContent(){
 
 function showAccoladesContent(){
 	var top = $('#pageContent').position().top;
-	
-	//$('#notableContentClose').css({'top': -top + 18});
+	var accoThumbCount = $('.accoThumb').size();
+	var accoContainerWidth = accoThumbCount * (thumbWidth + 30);
+
+	pageBgSwap();
+
 	$('#pageContent').css({
 		'background-color': 'transparent',
-		'top': window.innerHeight,
+		'top': windowHeight,
 		'left': 0,
-		'width': window.innerWidth,
-		'height': window.innerHeight
+		'width': windowWidth,
+		'height': windowHeight
+	});
+
+	$('.awardsKey').css({
+		'opacity': 0
+	});
+
+	$('#featuredAccolades').css({
+		'top': windowHeight
 	});
 
 	$('#pageContent').animate({
 		'top': 0
 	}, fadeInterval);
 
+	setTimeout(function(){
+		$('.awardsKey').animate({
+			'opacity': 1
+		}, fadeInterval);
+	},fadeInterval * 2);
+
+	setTimeout(function(){
+		$('#featuredAccolades').animate({
+			'top': windowHeight * 0.18888888888
+		}, fadeInterval);
+	},fadeInterval);
+
+
+	$('#accolades').css({
+		'width': viewPortWidth,
+		'padding': 0
+	});
+
+	$('.thumb').css({ 
+		'width' : thumbWidth,
+		'height' : thumbHeight
+	});
+
+	$('#accoladesContainer').css({
+		'width': accoContainerWidth
+	});
 
 }
 
@@ -306,7 +389,7 @@ function showArticle(){
 
 	$('#notableArticle').css({
 		'opacity': 1,
-		'top': window.innerHeight,
+		'top': windowHeight,
 		'height': height - 10
 	}).animate({
 		'top': 10
@@ -318,9 +401,9 @@ function hideArticle(){
 		'opacity': 0,
 	}, function(){
 		$(this).css({
-			'top': window.innerHeight
+			'top': windowHeight
 		});
-		slideThumbsUp();
+
 	});
 }
 
@@ -425,8 +508,9 @@ function showPage(page){
 		    // the response is passed to the function
 		    success: function( text ) {
 
-		    	closePage();
+		    	closePage(state);
 		    	state = page;
+		    	
 		    	setTimeout(function(){
 		    		$('#pageContent').empty();
 		    		$('#pageContent').html( text );
@@ -450,53 +534,6 @@ function showPage(page){
 		        //alert( "The request is complete!" );
 		    }
 		});
-}
-
-function showPage(page){
-
-		// the server request
-		$.ajax({
-
-		    // The URL for the request
-		    url: "fns/ajxPage.php",
-		 
-		    // The data to send (will be converted to a query string)
-		    data: {	"page": page
-				},
-
-		    // Whether this is a POST or GET request
-		    type: "POST",
-		 
-		    // Code to run if the request succeeds;
-		    // the response is passed to the function
-		    success: function( text ) {
-
-		    	closePage();
-		    	state = page;
-		    	setTimeout(function(){
-		    		$('#pageContent').empty();
-		    		$('#pageContent').html( text );
-		    	}, fadeInterval);
-		    	openPage();
-		    	console.log(state);
-
-		    },
-		 
-		    // Code to run if the request fails; the raw request and
-		    // status codes are passed to the function
-		    error: function( xhr, status, errorThrown ) {
-		        alert( "Sorry, there was a problem!" );
-		        console.log( "Error: " + errorThrown );
-		        console.log( "Status: " + status );
-		        console.dir( xhr );
-		    },
-		 
-		    // Code to run regardless of success or failure
-		    complete: function( xhr, status ) {
-		        //alert( "The request is complete!" );
-		    }
-		});
-
 }
 
 function showNotableArticle(id){
