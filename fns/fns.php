@@ -22,12 +22,7 @@ function htmlHeader() {
 			<!-- end facebook meta -->
 	    	<link rel="stylesheet" href="css/markwoollen.css" type="text/css" />
 	    	<link rel="stylesheet" href="fonts/css/font-awesome.min.css">
-	  		<!-- third party apis -->
-			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-			<script src="js/jquery-ui-EFFECTS.js"></script>
-			<script src="js/jquery.address-1.5.min.js"></script>
-			<!-- custom js for mwa -->
-			<script src="js/pageManager.js"></script>
+	    	<link rel="stylesheet" href="js/video-js-5.16.0/video-js.min.css" type="text/css" />
 	 	</head>
 
 	 	<body>
@@ -36,7 +31,6 @@ function htmlHeader() {
 
 function htmlBody(){
 ?>
-	
 	<div id="bgContainer"><div id="beginBlack"></div></div>
 	<div id="videoContainer"></div>
 	<div id="pageContainer">
@@ -94,8 +88,35 @@ function thumbnails(){
 // writes a html footer
 function htmlFooter(){
 ?>
+	  		<!-- third party apis -->
+			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+			<script src="js/jquery-ui-EFFECTS.js"></script>
+			<script src="js/jquery.address-1.5.min.js"></script>
+			<script src="js/video-js-5.16.0/video.min.js"></script>
+			<!-- custom js for mwa -->
+			<script src="js/pageManager.js"></script>
 	    	<!-- custom js -->
 			<script language="Javascript">
+
+					if (document.images) {
+						img0 = new Image();
+						img1 = new Image();
+						img2 = new Image();
+						img3 = new Image();
+						img4 = new Image();
+						img5 = new Image();
+						img6 = new Image();
+						img7 = new Image();
+
+						img0.src = "images/backgrounds/home.jpg";
+						img1.src = "images/backgrounds/profile.jpg";
+						img2.src = "images/backgrounds/notables.jpg";
+						img3.src = "images/backgrounds/accolades.jpg";
+						img4.src = "images/backgrounds/connect.jpg";
+						img5.src = "images/backgrounds/work.jpg";
+						img6.src = "images/backgrounds/design.jpg";
+						img7.src = "images/backgrounds/more.jpg";
+					}
 				
 				$(document).ready(function() { 
 					pageManager();

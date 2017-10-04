@@ -98,7 +98,7 @@
 		
 		$conn = pdo_connect();
 
-		$sql = 'SELECT localLink, blurb, title, id  
+		$sql = 'SELECT localLink, blurb, title, id, type
 				FROM press ORDER BY sortOrder';
 
 		$statement = $conn->prepare($sql);

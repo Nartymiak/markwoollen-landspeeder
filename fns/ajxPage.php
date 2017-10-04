@@ -51,16 +51,27 @@ $pageID = $_POST['page'];
 					<div class="right">
 					<?php
 						foreach($content as $article){
+
+							if($article['type'] === 'video'){
+								$articleUID = getTrailerUniqueID($article['localLink']);
 							?>
-
-									<div class="row">
-										<a class="notableLink" id ="<?php echo $article['id']?>" href="<?php echo $article['localLink'] ?>">
-											<p><?php echo $article['blurb'] ?> (more)</p>
-											<p class="title"><?php echo $article['title'] ?></p>
-										</a>
-									</div>
-
+								<div class="row">
+									<a class="notableVideoLink" id ="<?php echo $article['localLink']?>" data="<?php echo $articleUID?>" href="<?php echo $article['localLink'] ?>">
+										<p><?php echo $article['blurb'] ?> (video)</p>
+										<p class="title"><?php echo $article['title'] ?></p>
+									</a>
+								</div>						
 							<?php
+							}else{
+							?>
+								<div class="row">
+									<a class="notableLink" id ="<?php echo $article['id']?>" href="<?php echo $article['localLink'] ?>">
+										<p><?php echo $article['blurb'] ?> (more)</p>
+										<p class="title"><?php echo $article['title'] ?></p>
+									</a>
+								</div>
+							<?php
+							}
 						}
 					?>
 					</div>
@@ -75,12 +86,12 @@ $pageID = $_POST['page'];
 		$id = $_POST['id'];
 
 		$content = getNotableArticle($id);
+
+
 		if(!empty($content)){
-
-			echo '<div id="articleHeader"><p class="title">' .$content['title']. ': ' .$content['date']. '</p><i id="articleClose" class="fa fa-times" aria-hidden="true"></i><div class="clear"></div></div>';
-		
-			echo '<div id="articleInner">'.$content['content']. '</div>';
-
+			echo '<div id="articleHeader"><p class="title">' .$content['title']. ': ' .$content['date']. '</p><i id="articleClose" class="fa fa-times" aria-hidden="true"></i><div class="clear"></div></div>';	
+			echo '<div id="articleInner">'.$content['content'];
+			echo '</div>';
 		}
 	} else if ($pageID == 'accolades'){
 

@@ -98,18 +98,32 @@ a{
 	text-decoration:none;
 }
 
-a:hover, .selected{ 
-	color:#ffffff!important;
-	cursor:pointer;
+#articleInner a{
+    color: #464646;
+    text-decoration: underline;
+}
+
+#articleInner a:hover{ 
+    color: #464646;
+    text-decoration: underline;
 }
 
 #bgContainer {
 	width:100vw;
 	height:100vh;
-	background:#d8d8d8 url(../images/backgrounds/home.jpg) center right no-repeat;
+	background:#d8d8d8 url(../images/backgrounds/home.jpg) center center no-repeat;
 	background-size: cover;
 	position: relative;
 	z-index: 1;
+}
+
+#pageBackground {
+	background:#d8d8d8 url(../images/home.jpg) center center no-repeat;
+	position:relative;
+	width:100vw;
+	height:100vh;
+	background-size: cover;
+	opacity:0;
 }
 
 #beginBlack {
@@ -135,10 +149,15 @@ a:hover, .selected{
 	height:67.64705883%;
 	position: relative;
 	z-index: 3;
-	overflow: scroll;
+	overflow-y:hidden;
+	overflow-x: scroll;
 	box-sizing:border-box;
 	margin:0 auto;
 	background-size: cover;
+}
+
+#thumbnails::-webkit-scrollbar {
+    -webkit-appearance: none;
 }
 
 #thumbLeft, #thumbRight {
@@ -216,7 +235,11 @@ a:hover, .selected{
 	width:100%;
 	height:100%;
 	display:block;
-	color: rgb(149, 148, 147);
+}
+
+a:hover, .selected{ 
+	color:#ffffff;
+	cursor:pointer;
 }
 
 #nav .home {
@@ -265,10 +288,6 @@ a:hover, .selected{
 	margin-left:10px;
 }
 
-#videoContainer .videoPlayer {
-	height: 70%;
-}
-
 .videoPlayer video {
 	width:100%;
 	height:100%;
@@ -283,15 +302,6 @@ a:hover, .selected{
 	top:0;
 	left:0;
 	z-index: 2;
-}
-
-#pageBackground {
-	background:#d8d8d8 url(../images/home.jpg) center right no-repeat;
-	position:relative;
-	width:100vw;
-	height:100vh;
-	background-size: cover;
-	opacity:0;
 }
 
 #topSlide {
@@ -673,6 +683,9 @@ a:hover, .selected{
 	background-color: rgba(0, 0, 0, .66);
 	border-top:.375em solid rgba(255, 255, 255, .33);
 	margin-bottom:3em;
+	-webkit-box-shadow: 0px 17px 56px -16px rgba(0,0,0,0.75);
+	-moz-box-shadow: 0px 17px 56px -16px rgba(0,0,0,0.75);
+	box-shadow: 0px 17px 56px -16px rgba(0,0,0,0.75);
 }
 
 .workRowWrapper {
@@ -771,7 +784,7 @@ a:hover, .selected{
 
 
 @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait){
-  #bgContainer, #videoContainer, #pageContainer  {
+  #bgContainer, #videoContainer, #pageContainer {
     height: 1024px;
   }
 }
