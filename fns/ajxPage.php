@@ -20,7 +20,7 @@ $pageID = $_POST['page'];
 	} else if ($pageID == 'connect'){
 	?>
 
-				<div id="profileContent">
+				<div id="connectContent">
 					<p>General Inquiries &#45; <a href='mailto:info@markwoollen.com'>info@markwoollen.com</a></p>
 					<p>Scott Mitsui, Creative Director &#45; <a href='mailto:scott@markwoollen.com'>scott@markwoollen.com</a></p>
 					<p>Jeremy Greene, Creative Director &#45; <a href='mailto:jeremy@markwoollen.com'>jeremy@markwoollen.com</a></p>
@@ -135,9 +135,136 @@ $pageID = $_POST['page'];
 		<?php
 	} else if($pageID == 'work'){
 
-		echo "work";
+		$trailers = getWork();
+		$i=0;
 
+		?>
+		<div id="workContent" data="<?php echo sizeof($trailers) ?>">
+			<div id="workPagesContainer">
+				<?php 
+				foreach ($trailers as $trailer) {
+					
+					if($i === 0){
+						echo "<div class=\"workPage\">\r\n";
+						echo "<div class=\"workRow\">\r\n";
+						echo "<div  class=\"workRowWrapper\">\r\n";
+					}
+
+					if($i%5 === 0 && $i!== 0){
+						echo "			<div class=\"clear\"></div>\r\n";
+						echo "		</div><!-- end wrapper -->\r\n";
+						echo "</div><!-- end row -->\r\n";
+						if($i%15 === 0){
+							echo "</div><!-- end page -->\r\n";
+							echo "<div class=\"workPage\">\r\n";
+						}
+						echo "<div class=\"workRow\">\r\n";
+						echo "<div  class=\"workRowWrapper\">\r\n";
+					}
+					?>
+						<div href="<?php echo $trailer['name']?>" class="thumb workThumb" id="<?php echo $trailer['id']?>" data="<?php echo $trailer['uniqueID']?>" style="background:url(//markwoollen.com/img/thumbs/<?php echo $trailer['id']?>.jpg) center center / cover no-repeat;" >
+							<p> </p>
+							<div class="thumbTitle"><?php echo $trailer['name']?></div>
+						</div>
+					<?php
+					$i++;
+				}
+
+				echo "		<div class=\"clear\"></div>\r\n";
+				echo "		</div><!-- end wrapper -->\r\n";
+				echo "		</div><!-- end row -->\r\n"; 
+				echo "</div><!-- end workPage -->\r\n";
+				?>
+				<div class="clear"></div>
+			</div>
+		</div>
+
+
+		<?php
+	}else if($pageID == 'more'){
+
+		$trailers = getMore();
+		$i=0;
+
+		?>
+		<div id="workContent" data="<?php echo sizeof($trailers) ?>">
+			<div id="workPagesContainer">
+				<?php 
+				foreach ($trailers as $trailer) {
+					
+					if($i === 0){
+						echo "<div class=\"workPage\">\r\n";
+						echo "<div class=\"workRow\">\r\n";
+						echo "<div  class=\"workRowWrapper\">\r\n";
+					}
+
+					if($i%5 === 0 && $i!== 0){
+						echo "			<div class=\"clear\"></div>\r\n";
+						echo "		</div><!-- end wrapper -->\r\n";
+						echo "</div><!-- end row -->\r\n";
+						if($i%15 === 0){
+							echo "</div><!-- end page -->\r\n";
+							echo "<div class=\"workPage\">\r\n";
+						}
+						echo "<div class=\"workRow\">\r\n";
+						echo "<div  class=\"workRowWrapper\">\r\n";
+					}
+					?>
+						<div href="<?php echo $trailer['name']?>" class="thumb workThumb" id="<?php echo $trailer['id']?>" data="<?php echo $trailer['uniqueID']?>" style="background:url(//markwoollen.com/img/thumbs/<?php echo $trailer['id']?>.jpg) center center / cover no-repeat;" >
+							<p> </p>
+							<div class="thumbTitle"><?php echo $trailer['name']?></div>
+						</div>
+					<?php
+					$i++;
+				}
+
+				echo "		<div class=\"clear\"></div>\r\n";
+				echo "		</div><!-- end wrapper -->\r\n";
+				echo "		</div><!-- end row -->\r\n"; 
+				echo "</div><!-- end workPage -->\r\n";
+				?>
+				<div class="clear"></div>
+			</div>
+		</div>
+
+
+		<?php
+	}else if($pageID == 'design'){
+
+		$reelName = 'MWA Graphics Reel';
+		$designs = getFeaturedDesigns();
+		$reel = getReel($reelName);
+
+		$i=0;
+
+		?>
+		<div id="designContent">
+			<div class="left">
+				<p style="height:100%;">
+					MWA employs a team of highly skilled artists and animators who create the motion design for our campaigns and are regularly sought out by other companies for a multitude of design challenges.
+					<br><br><a href='mailto:graphics@markwoollen.com'>graphics@markwoollen.com</a>
+				</p>
+				 
+				<a id='playReel'>play reel</a>
+			</div>
+			<div class="right">
+				<div id="designSlide" class='slide'></div>
+				<ul class="slideContents" style="display:none">
+					<?php
+						$count = 0;
+						foreach ($designs as $design) { 
+							echo '<li id="slide_'.$count.'" src="'.$design['imageName'].'">'.$design['project'].'</li>';
+							$count ++;
+						}
+					?>
+				</ul>
+			</div>
+			<div class="clear"></div>
+		</div>
+
+		<?php
 	}
+
 ?>
 
 

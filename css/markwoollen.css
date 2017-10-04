@@ -94,20 +94,19 @@ body {
 }
 
 a{
-	color:#666666;
+	color:#d1d1d1;
 	text-decoration:none;
 }
 
-a:hover
-{ 
-	color:#d1d1d1;
+a:hover, .selected{ 
+	color:#ffffff!important;
 	cursor:pointer;
 }
 
 #bgContainer {
 	width:100vw;
 	height:100vh;
-	background:#d8d8d8 url(../images/home.jpg) center right no-repeat;
+	background:#d8d8d8 url(../images/backgrounds/home.jpg) center right no-repeat;
 	background-size: cover;
 	position: relative;
 	z-index: 1;
@@ -133,15 +132,31 @@ a:hover
 }
 
 #thumbnails {
-	width:100%;
 	height:67.64705883%;
 	position: relative;
 	z-index: 3;
-	overflow: scroll;
+	overflow: hidden;
+	overflow-x: scroll;
 	box-sizing:border-box;
-	padding:0 4.696969696%;
 	margin:0 auto;
 	background-size: cover;
+}
+
+#thumbLeft, #thumbRight {
+	width:40px;
+	height:40px;
+	position: absolute;
+	z-index: 10;
+	cursor: pointer;
+	background-color: rgb(255, 0, 0);
+}
+
+#thumbLeft {
+	left:0;
+}
+
+#thumbRight {
+	right:0;
 }
 
 #thumbnailsContainer {
@@ -180,7 +195,7 @@ a:hover
 	display: block;
 	height:32.35294117%;
 	letter-spacing:5px;
-	color:#959493;
+	color: rgb(149, 148, 147);
 	background-size: cover;
 	z-index: 4;
 }
@@ -203,6 +218,7 @@ a:hover
 	width:100%;
 	height:100%;
 	display:block;
+	color: rgb(149, 148, 147);
 }
 
 #nav .home {
@@ -226,6 +242,7 @@ a:hover
 	margin:25px auto;
 	height:100%;
 	position: relative;
+	max-width:1024px;
 }
 
 #videoContainer .title {
@@ -257,6 +274,7 @@ a:hover
 .videoPlayer video {
 	width:100%;
 	height:100%;
+	display: block;
 }
 
 #pageContainer {
@@ -329,6 +347,13 @@ a:hover
 	box-sizing:border-box;
 }
 
+#connectContent {
+	padding: 2em;
+	overflow: scroll;
+	height:100%;
+	box-sizing:border-box;
+}
+
 #profileSubNav {
 	position: relative;
 	bottom:0;
@@ -364,7 +389,7 @@ a:hover
     background: #404040;
 }
 
-#pageContent p{
+#pageContent p, #connectContent p{
 	margin-bottom:1.25em;
 }
 
@@ -616,6 +641,107 @@ a:hover
 	margin:0 auto;
 }
 
+#workContent {
+	height:82.539682539%;
+	/* actual from old site top:23.492063492%; */
+	top:18.492063%;
+	position: relative;
+	overflow: scroll;
+}
+
+#workPagesContainer{
+	height:100%;
+	background-color: rgba(255, 255, 255, .40);
+}
+
+.workPage {
+	height:100%;
+	float:left;
+}
+
+.workRow {
+	height:15.4%;
+	background-color: rgba(0, 0, 0, .66);
+	border-top:.375em solid rgba(255, 255, 255, .33);
+	margin-bottom:3em;
+}
+
+.workRowWrapper {
+	height:100%;
+	width:89.898989899%;
+	margin:0 auto;
+}
+
+.workRow .thumb {
+	height:84.415584415%;
+	width:17.303370786%;
+	margin:0 1.348314606%;
+	margin-top:0.33em;
+}
+
+.workRow .thumbTitle {
+	position:absolute;
+	top:100%;
+	margin-top: 1.25em;
+	background-color: transparent;
+	font-size: .875em;
+	padding:0;
+	line-height: 1.2em;
+}
+
+.workNav {
+	opacity: 0;
+}
+
+#designContent {
+	width:100%;
+	height:100%;
+	background: url(../images/sub_bg_design.jpg);
+	background-repeat: repeat-x;
+	background-size: cover;
+}
+
+#designContent .left{
+	width:33.33333333%;
+	height:100%;
+	float:left;
+	padding:1.5em;
+	box-sizing:border-box;
+	position: relative;
+}
+#designContent .right{
+	width:60.606060606%;
+	height:100%;
+	float:right;
+	overflow: scroll;
+}
+
+#designSlide {
+	height: 100%;
+	opacity:1;
+	background-color:#000;
+	background-position:50% 50%;
+	background-repeat:no-repeat;
+	background-size: cover;
+}
+
+#playReel{
+	width:100%;
+	display:block;
+	padding: .5em 0;
+	color: #3a3b3b;
+	font-family: 'Conv_LondonBetween' , sans-serif;
+    font-size: 1.25em;
+    letter-spacing: 6px;
+    cursor: pointer;
+    background-color: #a8aaa8;
+    text-align: center;
+    line-height: 1.25em;
+    position: relative;
+    bottom:3em;
+    margin:0 auto;
+
+}
 
 
 @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait){

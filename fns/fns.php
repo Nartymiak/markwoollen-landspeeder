@@ -63,6 +63,9 @@ function nav(){
 					<li><a href="profile">profile</a></li>
 					<li><a href="connect">connect</a></li>
 					<li><a href="work">work</a></li>
+					<li class="workNav"><a href="design">design</a></li>
+					<li class="workNav"><a href="more">more</a></li>
+
 				</ul>
 			</div>
 <?php
@@ -72,6 +75,8 @@ function thumbnails(){
 	// query for trailers
 	$trailers = getTrailers('work');
 
+	echo "	<div id=\"thumbLeft\"></div>\r\n";
+	echo "	<div id=\"thumbRight\"></div>\r\n";
 	echo "	<div id=\"thumbnails\">\r\n";
 	echo "		<div id=\"thumbnailsContainer\">\r\n";
 	
