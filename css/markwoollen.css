@@ -371,7 +371,7 @@ a:hover, .selected{
 #profileSubNav a{
 	text-align: center;
 	float:left;
-	width:50%;
+	width:100%;
 	height:100%;
 	box-sizing:border-box;
 	margin:0;
@@ -469,7 +469,8 @@ a:hover, .selected{
 
 #notableArticle {
 	position:fixed;
-	width: 79.797979798%;
+	/* width: 79.797979798%; */
+	width: 69.797979798%;
 	left: 20.202020202%;
 	color: #000000;
 	border:10px solid transparent;
@@ -712,7 +713,7 @@ a:hover, .selected{
 }
 
 .workNav {
-	opacity: 0;
+	opacity: 1;
 }
 
 #workLeftScroll, #workRightScroll {

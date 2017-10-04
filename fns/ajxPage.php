@@ -12,8 +12,6 @@ $pageID = $_POST['page'];
 					</div>
 					<div id="profileSubNav">
 						<a id="press" href="notables">notables</a>
-						<a id="awards" href="accolades">accolades</a>
-						<div class="clear"></div>
 					</div>
 
 	<?php
@@ -22,21 +20,22 @@ $pageID = $_POST['page'];
 
 				<div id="connectContent">
 					<p>General Inquiries &#45; <a href='mailto:info@markwoollen.com'>info@markwoollen.com</a></p>
-					<p>Scott Mitsui, Creative Director &#45; <a href='mailto:scott@markwoollen.com'>scott@markwoollen.com</a></p>
-					<p>Jeremy Greene, Creative Director &#45; <a href='mailto:jeremy@markwoollen.com'>jeremy@markwoollen.com</a></p>
-					<p>
-						<a href='javascript:mPageManager.showMap()styleDefault.css'>207 Ashland Ave. Santa Monica, CA 90405</a>
-						<br>
-						Tel. 310&#45;399&#45;2690
-						<br>
-						<br>
-						MWA is always accepting resumes/reels from talented and experienced editors
-						<br>
-						<a href='mailto:jobs@markwoollen.com'>jobs@markwoollen.com</a>
-						<br>
-						<br>
-						<a href='http://www.facebook.com/pages/Mark&#45;Woollen&#45;Associates/262877575207?sk=wall' target='top'><img src='http://markwoollen.com/img/facebook.png' border=0></a> &nbsp; <a href='http://twitter.com/#!/MarkWoollen' target='top'><img src='http://markwoollen.com/img/twitter.png' border=0></a>
+					<p>Jeremy Greene, Creative Director &#45; <a href='mailto:jeremy@markwoollen.com'>jeremy@markwoollen.com</a><br>
+					Jared Sapolin, Creative Director &#45; <a href='mailto:jared.sapolin@markwoollen.com'>jared.sapolin@markwoollen.com</a><br>
+					Jessica Fox, Creative Director &#45; <a href='mailto:jessicafox@markwoollen.com'>jessicafox@markwoollen.com</a><br>
+					Mark Fox, Creative Director &#45; <a href='mailto:markfox@markwoollen.com'>markfox@markwoollen.com</a><br>
+					Scott Mitsui, Creative Director &#45; <a href='mailto:scott@markwoollen.com'>scott@markwoollen.com</a>
 					</p>
+					
+					<div style="float:left;padding-right:1em;margin-right:1em;border-right:1px solid #fff">
+						<a href='http://www.facebook.com/pages/Mark&#45;Woollen&#45;Associates/262877575207?sk=wall' target='top'><img src='http://markwoollen.com/img/facebook.png' border=0></a> &nbsp; <a href='http://twitter.com/#!/MarkWoollen' target='top'><img src='http://markwoollen.com/img/twitter.png' border=0></a>
+					</div>
+					<div style="float:left;">
+						<p><a href='javascript:mPageManager.showMap()styleDefault.css'>207 Ashland Ave. Santa Monica, CA 90405</a>
+						<br>Tel. 310&#45;399&#45;2690</p>
+					</div>
+					<div class="clear"></div>
+					<p>MWA is always accepting resumes/reels from talented and experienced editors<br><a href='mailto:jobs@markwoollen.com'>jobs@markwoollen.com</a></p>
 				</div>
 	<?php
 	} else if ($pageID == 'notables'){
