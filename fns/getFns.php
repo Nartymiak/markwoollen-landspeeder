@@ -72,6 +72,28 @@
 
 	}
 
+	function getTrailerUniqueID($id){
+
+		$conn = pdo_connect();
+
+		$sql = 'SELECT 	uniqueID
+				FROM trailers
+				WHERE id = :id';
+
+		$statement = $conn->prepare($sql);
+        
+        $statement->bindValue(":id", $id, PDO::PARAM_STR);
+
+        $statement->execute();
+	    //Fetch all of the results.
+	    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+	    //$result now contains the entire resultset from the query.
+	    $conn = null;
+	    $result = $result[0]['uniqueID'];
+	    return $result;	
+
+	}
+
 	function getNotables(){
 		
 		$conn = pdo_connect();
@@ -156,9 +178,79 @@
 
 	}
 
+	function getWork(){
+
+		$conn = pdo_connect();
+
+		$sql = 'SELECT * FROM trailers WHERE onSite="true" AND (placement="all" or placement="work") ORDER BY sortOrder';
+
+		$statement = $conn->prepare($sql);
+
+        $statement->execute();
+	    //Fetch all of the results.
+	    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+	    //$result now contains the entire resultset from the query.
+
+	    $conn = null;
+	    return $result;	
+
+	}
+
+	function getFeaturedDesigns(){
+
+		$conn = pdo_connect();
+
+		$sql = 'SELECT * FROM featuredDesigns ORDER BY RAND()';
+
+		$statement = $conn->prepare($sql);
+
+        $statement->execute();
+	    //Fetch all of the results.
+	    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+	    //$result now contains the entire resultset from the query.
+
+	    $conn = null;
+	    return $result;	
+	
+	}
+
+	function getReel($reelName){
+
+		$conn = pdo_connect();
+
+		$sql = 'SELECT id, height FROM trailers WHERE name=:reelName LIMIT 1';
+
+		$statement = $conn->prepare($sql);
+
+		$statement->bindValue(":reelName", $reelName, PDO::PARAM_STR);
+
+        $statement->execute();
+	    //Fetch all of the results.
+	    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+	    //$result now contains the entire resultset from the query.
+
+	    $conn = null;
+	    return $result;	
+	
+	}
 
 
+	function getMore(){
 
+		$conn = pdo_connect();
+
+		$sql = 'SELECT * FROM trailers WHERE onSite="true" AND (placement="all" or placement="more") ORDER BY sortOrder';
+
+		$statement = $conn->prepare($sql);
+
+        $statement->execute();
+	    //Fetch all of the results.
+	    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+	    //$result now contains the entire resultset from the query.
+
+	    $conn = null;
+	    return $result;	
+	}
 
 
 

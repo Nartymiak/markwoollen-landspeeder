@@ -1,10 +1,25 @@
 <?php
 	include_once('includeList.php');
 
+	$details;
+	$linkedTrailers;
+
 	$uniqueID = $_POST['uniqueID'];
 	$id = $_POST['id'];
+
+	
+
+	if($uniqueID == null || $uniqueID == ''){
+
+		$uniqueID = getTrailerUniqueID($id);
+
+	}
+	
 	$details = getTrailerDetails($uniqueID);
 	$linkedTrailers = getLinkedTrailers($uniqueID);
+
+
+
 	$temp = array();
 	$linkAddress = 1;
 	
