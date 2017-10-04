@@ -253,7 +253,7 @@ function openPage(callback){
 		}
 	});
 
-	toggleWorkNav();
+	//toggleWorkNav();
 
 	switch(state){
 		case 'notables':
@@ -578,7 +578,7 @@ function showArticle(){
 	$('#notableArticle').css({
 		'opacity': 1,
 		'top': windowHeight,
-		'height': height - 10
+		'height': height - 25
 	}).animate({
 		'top': 10
 	}, fadeInterval);
