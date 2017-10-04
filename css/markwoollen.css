@@ -123,7 +123,7 @@ a:hover, .selected{
 
 
 #thumbAndNavContainer {
-	background: url(../images/thumb-and-nav-bg.png) bottom center no-repeat;
+	background: url(../images/thumb-and-nav-both-arrows-2.png) bottom center no-repeat;
 	position: relative;
 	background-size: 100%;
 	z-index: 4;
@@ -135,20 +135,18 @@ a:hover, .selected{
 	height:67.64705883%;
 	position: relative;
 	z-index: 3;
-	overflow: hidden;
-	overflow-x: scroll;
+	overflow: scroll;
 	box-sizing:border-box;
 	margin:0 auto;
 	background-size: cover;
 }
 
 #thumbLeft, #thumbRight {
-	width:40px;
-	height:40px;
+	width:5%;
+	height:100%;
 	position: absolute;
-	z-index: 10;
+	z-index: 100;
 	cursor: pointer;
-	background-color: rgb(255, 0, 0);
 }
 
 #thumbLeft {
@@ -210,7 +208,7 @@ a:hover, .selected{
 	position: relative;
 	height:100%;
 	display: inline-block;
-	padding: 14px 12px;
+	padding: .875em .75em;
 	box-sizing:border-box;
 }
 
@@ -445,7 +443,18 @@ a:hover, .selected{
 	float: left;
 	width: 79.797979798%;
 	height:100%;
-	overflow: scroll;
+	overflow-x:hidden;
+	overflow-y: scroll;
+}
+
+#notableContent .right::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+}
+#notableContent .right::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0,0,0,.5);
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
 }
 
 #notableArticle {
@@ -692,6 +701,23 @@ a:hover, .selected{
 .workNav {
 	opacity: 0;
 }
+
+#workLeftScroll, #workRightScroll {
+	width:5%;
+	height:100%;
+	position: absolute;
+	z-index: 100;
+	cursor: pointer;
+}
+
+#workLeftScroll {
+	left:0;
+}
+
+#workRightScroll {
+	right:0;
+}
+
 
 #designContent {
 	width:100%;

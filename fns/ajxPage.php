@@ -139,6 +139,7 @@ $pageID = $_POST['page'];
 		$i=0;
 
 		?>
+		<div id="workLeftScroll"></div><div id="workRightScroll"></div>
 		<div id="workContent" data="<?php echo sizeof($trailers) ?>">
 			<div id="workPagesContainer">
 				<?php 
@@ -187,6 +188,7 @@ $pageID = $_POST['page'];
 		$i=0;
 
 		?>
+		<div id="workLeftScroll"></div><div id="workRightScroll"></div>
 		<div id="workContent" data="<?php echo sizeof($trailers) ?>">
 			<div id="workPagesContainer">
 				<?php 
@@ -244,8 +246,9 @@ $pageID = $_POST['page'];
 					MWA employs a team of highly skilled artists and animators who create the motion design for our campaigns and are regularly sought out by other companies for a multitude of design challenges.
 					<br><br><a href='mailto:graphics@markwoollen.com'>graphics@markwoollen.com</a>
 				</p>
+				
 				 
-				<a id='playReel'>play reel</a>
+				<a id='playReel'data ="<?php echo $reel[0]['id']; ?>" href="115">play reel</a>
 			</div>
 			<div class="right">
 				<div id="designSlide" class='slide'></div>
