@@ -1,0 +1,283 @@
+@font-face {
+	font-family: 'Conv_LondonBetween';
+	src: url('http://markwoollen.com/fonts/LondonBetween.eot');
+	src: url('http://markwoollen.com/fonts/LondonBetween.eot?#iefix') format('embedded-opentype'), 
+		 url('http://markwoollen.com/fonts/LondonBetween.ttf') format('truetype'), 
+		 url('http://markwoollen.com/fonts/LondonBetween.svg#LondonBetween') format('svg'),
+		 url('http://markwoollen.com/fonts/LondonBetween.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+html {
+	width:100%;
+	height:100%;
+	min-height:350px;
+}
+body {
+	font-family: 'Conv_LondonBetween' , sans-serif;
+	font-size:12px;
+	letter-spacing:0px;
+	color:#fff;
+	text-align: left;	
+	margin: 0;
+	padding: 0;
+	width:100%;
+	height:100%;
+	min-height:350px;
+	-webkit-text-size-adjust: none;
+	background:#000;
+}
+a{
+	color:#fff;
+	text-decoration:none;
+}
+a:hover
+{ 
+	color:#fff;
+}
+a:visited{
+	color:#fff;
+}
+.left{
+	color:#c2c2c2;
+	text-align:left;
+	line-height: 130%
+}
+#container {
+	height:100%;
+	min-height:350px;
+	padding-left: 90px;   /* LC width */
+	background-size:cover;
+	background-position-x: 50%;
+	background-position-y: 50%;
+}
+#container .column {
+	float: left;
+	position: relative;
+	height:100%;
+	min-height:350px;
+}
+#right {
+	width: 100%;
+	font-size:13px;
+	letter-spacing:0px;
+	font-family: 'arial', 'Verdana' , sans-serif;
+	text-shadow: #000 0px 0px 8px;
+	overflow:hidden;
+}
+#left {
+	width:70px;  /* LC width */
+	padding: 0 10px 0 10px;
+	margin-left: -100%;
+	right:90px;  /* LC width */
+	background:url(http://markwoollen.com/img/mobile/bg_white_20.png);
+	font-size:18px;
+	text-align: right;	
+	vertical-align:middle;
+	text-shadow:        2px 2px 5px #000;
+	-moz-box-shadow:    0px 0px 5px #000;
+	-webkit-box-shadow: 0px 0px 5px #000;
+	box-shadow:         0px 0px 5px #000;
+}
+.bg_swapper{
+	width:100%;
+	height:100%;
+	min-height:350px;
+	position:absolute;
+	float:left;
+	top:0px;
+	left:0px;
+	opacity:0;
+	background-size:cover;
+	background-position-x: 50%;
+	background-position-y: 50%;
+}
+#guts{
+	position:relative;
+	float:left;
+	width:100%;
+}
+.justify{
+	font-weight:bold;
+	text-align:justify;
+	letter-spacing:1px;
+	line-height: 115%;
+	padding:20px;
+}
+.tint{
+	background:url(http://markwoollen.com/img/bg_30percent.png);
+}
+.fill{
+	font-weight:bold;
+	letter-spacing:1px;
+	line-height: 150%;
+	padding:20px;
+}
+.profileButton{
+	text-align:center;
+	position:relative;
+	float:left;
+	width:46%;
+	padding-left:2%;
+	padding-right:2%;
+	height:18px;
+	margin:6% 0 0% 0;
+	text-shadow: none;
+}
+#press{
+	color:#3A3B3B;
+	background:#A8AAA8;
+}
+#awards{
+	color:#959493;
+	background:#404040;
+}
+#design{
+	display:none;	
+}
+#interactive{
+	display:none;	
+}
+#more{
+	display:none;	
+}
+#interactiveSlide{
+	position:relative;
+	float:left;
+	width:100%;
+	height:163px;
+	left:-5px;
+}
+#designSlide{
+	position:relative;
+	float:left;
+	width:100%;
+	height:163px;
+	left:-5px;
+}
+.pressSnip{
+	border-bottom:8px solid #3f4343;
+	background: url(http://markwoollen.com/img/bg_press_snip_trim.png) ;
+	cursor:pointer; 
+	cursor:hand;
+	position:relative;
+	float:left;
+	min-height:40px;
+	width:100%;
+	letter-spacing:0px;
+	font-size:14px;
+	font-family: 'Conv_LondonBetween' , sans-serif;
+	letter-spacing:1px;
+	color:#fff;
+	text-align:left;
+}
+#pressQuote{
+	padding:8px;
+}
+#pressTitle{
+	font-weight:bold;	
+	letter-spacing:0px;
+	padding-top:2px;
+	font-family: 'arial', 'Verdana' , sans-serif;
+	color:#000;
+	text-shadow: none;
+}
+.trailer{
+	cursor:pointer; 
+	cursor:hand;
+	position:relative;
+	float:left;
+	width:100%;
+	height:55px;
+	background:url(http://markwoollen.com/img/mobile/bg_trailer.png) bottom left repeat-x;
+	overflow:hidden;
+}
+#thumbnail{
+	position:relative;
+	float:left;
+	width:134px;
+	height:55px;
+	background-position: 50% 50%;
+	background-size:cover;
+
+}
+#trailerName{
+	font-weight:bold;
+	position:absolute;
+	float:left;
+	left:140px;
+	right:3px;
+	padding-top:20px;
+	color:#fff;
+	font-size:13px;
+	font-family: 'arial', 'Verdana' , sans-serif;
+}
+#award{
+	font-style:italic;
+	font-size:11px;
+	color:#a1a1a1;
+}
+.slide{
+	float:left;
+	background-size:contain;
+	background-position-x: 50%;
+	background-position-y: 50%;
+	background-repeat: no-repeat;
+	margin:2%;
+}
+#topContent{
+	position:relative;
+	float:left;
+}
+body[class="landscape"] #topContent
+{
+		height:100%;
+		width:100%;
+}
+body[class="portrait"] #topContent
+{
+		width:100%;
+		height:50%;
+}
+body[class="portrait"] .slide
+{
+	width:98%;
+	height:47%;
+	background-position: 50% 50%;
+	
+}
+body[class="landscape"] .slide
+{
+	width:55%;
+	height:98%;
+	background-position: 50% 0%;
+	
+}
+body[class="portrait"] .slideText
+{
+	width:90%;
+	height:29%;
+	padding-left:2px;
+	
+}
+body[class="landscape"] .slideText
+{
+	width:39%;
+	height:80%;
+}
+#logo{
+	cursor:pointer; 
+	cursor:hand;
+	z-index:2;
+	height:18%;
+	padding-top:20%;
+	padding-bottom:15%;
+}
+.navItem{
+	float:right;
+	cursor:pointer; 
+	cursor:hand;
+	height:9%;
+	margin-top:15%;
+	margin-bottom:15%;
+}

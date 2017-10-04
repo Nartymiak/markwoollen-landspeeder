@@ -11,7 +11,7 @@ $pageID = $_POST['page'];
 						<p>What started as a one&#45;man operation several years ago has grown into a staff of over twenty highly skilled producers, writers, editors and graphic designers, who bring their unique vision to every marketing challenge, from critically acclaimed indies to the year's biggest blockbusters. MWA has become the exclusive agency of choice for many award&#45;winning filmmakers and has created campaigns for some of the biggest Oscar contenders in recent history. Our work has been honored with dozens of Golden Trailer and Key Art Awards and has garnered attention from the New York Times, Vanity Fair, NPR and Wired Magazine.</p>
 					</div>
 					<div id="profileSubNav">
-						<a id="press" href="notables">notables</a>
+						<a id="press" href="notables">press</a>
 					</div>
 
 	<?php
