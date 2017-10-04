@@ -52,21 +52,26 @@ function reload(){
 //thumbnails
 function scaleElements(){
 
-	var thumbCount, fontSize, s, px;
+	var thumbCount, fontSize, s, px, thumbAndNavContainerHeight;
 
 	windowWidth = window.innerWidth;
 	windowHeight = window.innerHeight;
 	ratio = windowWidth/windowHeight;
 
-	if (ratio > 1){
-		px = 4 * ratio + 'px';		
-		$('#nav ul').css('bottom',  px);
+	fontSize = Math.round(windowHeight * 0.02539682539);
+
+	if (ratio > 1.5){
+		thumbAndNavContainerHeight = (windowHeight * .20359281437) * (ratio *.75);
+	} else if (ratio > 1){
+		thumbAndNavContainerHeight = (windowHeight * .20359281437);
 	} else {
-		px = -4;		
-		$('#nav ul').css('bottom',  px);
+		thumbAndNavContainerHeight = (windowHeight * .20359281437) * ratio;
 	}
 
-	fontSize = Math.round(windowHeight * 0.02539682539);
+	if(windowWidth < 769){
+		fontSize = fontSize * .75;
+		thumbAndNavContainerHeight = (windowHeight * .20359281437) * (ratio *.75);
+	}
 	s = fontSize.toString();
 	$('body').css('font-size', s+"px");
 
@@ -74,10 +79,11 @@ function scaleElements(){
 	thumbCount = $('.thumb').size();
 	viewPortWidth = windowWidth * .88571428571;
 	thumbWidth = viewPortWidth / 5;
-	containerWidth = thumbCount * thumbWidth;
+	containerWidth = thumbCount * thumbWidth + 1;
 	thumbMargin = thumbWidth * .05649717514;
 	thumbWidth = thumbWidth - (thumbMargin * 2);
-	thumbHeight = windowHeight * .09730538922;
+	//thumbHeight = windowHeight * .09730538922;
+	thumbHeight = thumbWidth * .41139240506;
 
 	// set stuff
 	$('#thumbnails').css({
@@ -94,7 +100,11 @@ function scaleElements(){
 		'width': containerWidth
 	});
 	$('#thumbAndNavContainer').css({
-		'top': $('#thumbAndNavContainer').height() *-1
+		'height': thumbAndNavContainerHeight,
+		'top': thumbAndNavContainerHeight *-1
+	});
+	$('#nav ul li a').css({
+		'line-height': thumbAndNavContainerHeight * .3235294117 + 'px'
 	});
 	$('#bottomSlide').css('height', windowHeight * .3619047619);
 }

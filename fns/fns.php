@@ -93,6 +93,15 @@ function htmlFooter(){
 			<script src="js/jquery-ui-EFFECTS.js"></script>
 			<script src="js/jquery.address-1.5.min.js"></script>
 			<script src="js/video-js-5.16.0/video.min.js"></script>
+			<script src="js/mdetect.js"></script>
+			<!-- mobile -->
+			<script>
+				// redirect to mobile site if applicable
+				if(isMobile.any()){
+					console.log('mobile');
+					document.location = 'mobile.php<?=(count($_GET) ? "?" : "").$_SERVER["QUERY_STRING"]?>'+window.location.hash;
+				}
+			</script>	
 			<!-- custom js for mwa -->
 			<script src="js/pageManager.js"></script>
 	    	<!-- custom js -->
