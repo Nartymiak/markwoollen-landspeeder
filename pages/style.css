@@ -1,0 +1,51 @@
+@font-face {
+	font-family: 'Conv_LondonBetween';
+	src: url('../fonts/LondonBetween.eot');
+	src: url('../fonts/LondonBetween.eot?#iefix') format('embedded-opentype'), 
+		 url('../fonts/LondonBetween.ttf') format('truetype'), 
+		 url('../fonts/LondonBetween.svg#LondonBetween') format('svg'),
+		 url('../fonts/LondonBetween.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+html{width:100%;height:100%;}
+body{
+	font-family: serif;
+	background:#efefef;
+	text-align: left;
+	margin: 0px;
+	padding: 10px;
+	font-size:18px;
+	color:#000;
+}
+
+#container{
+	position:relative;
+	margin-left:auto;
+	margin-right:auto;
+	width:100%;
+	text-align:left;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	height:550px
+}
+.more{
+/*	font-family: 'Conv_LondonBetween' , sans-serif;*/
+	position:absolute;
+	float:right;
+	bottom:10px;
+	right:360px;
+}
+p{text-indent:10px;}
+a{color:#464646;text-decoration:underline;}
+a:hover{color:#464646;}
+.smaller{
+	font-size:16px;
+	color:#000;
+}
+header{
+	font-size:24px;
+	color:#000;
+	font-weight: bold;
+}

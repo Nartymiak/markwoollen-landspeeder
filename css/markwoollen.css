@@ -1,0 +1,559 @@
+/* CSS designed by Nick Artymiak
+
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+.clear {
+	clear: both;
+}
+
+.submit:hover {
+	cursor: pointer;
+}
+
+input:focus, select:focus, textarea:focus, button:focus {
+    outline: none;
+}
+
+/* ---------------------- end reset */
+
+img {
+	max-width: 100%;
+}
+
+
+@font-face {
+	font-family: 'Conv_LondonBetween';
+	src: url('../fonts/LondonBetween.eot');
+	src: url('../fonts/LondonBetween.eot?#iefix') format('embedded-opentype'), 
+		 url('../fonts/LondonBetween.ttf') format('truetype'), 
+		 url('../fonts/LondonBetween.svg#LondonBetween') format('svg'),
+		 url('../fonts/LondonBetween.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+
+body {
+	font-family: 'Conv_LondonBetween' , sans-serif;
+	font-size:16px;
+	letter-spacing:1px;
+	color:#fff;
+	width:100vw;
+	height:100vh;
+	position: relative;
+	overflow:hidden;
+}
+
+a{
+	color:#666666;
+	text-decoration:none;
+}
+
+a:hover
+{ 
+	color:#d1d1d1;
+	cursor:pointer;
+}
+
+#bgContainer {
+	width:100vw;
+	height:100vh;
+	background:#d8d8d8 url(../images/home.jpg) center right no-repeat;
+	background-size: cover;
+	position: relative;
+	z-index: 1;
+}
+
+#beginBlack {
+	position: absolute;
+	top:0;
+	width:100vw;
+	height:100vh;
+	background-color: #000000;
+	opacity: 1;
+}
+
+
+#thumbAndNavContainer {
+	background: url(../images/thumb-and-nav-bg.png) bottom center no-repeat;
+	position: relative;
+	background-size: 100%;
+	z-index: 4;
+	top:-136px;
+	height: 20.359281437%;
+}
+
+#thumbnails {
+	width:100%;
+	height:67.64705883%;
+	position: relative;
+	z-index: 3;
+	overflow: scroll;
+	box-sizing:border-box;
+	padding:0 4.696969696%;
+	margin:0 auto;
+	background-size: cover;
+}
+
+#thumbnailsContainer {
+	position: relative;
+	top:101%;
+}
+
+.thumb {
+	display: inline-block;
+	width:130px;
+	margin:0 12px;
+	box-sizing:border-box;
+	border: 1px solid #acacac;
+	position: relative;
+	cursor:pointer;
+	float:left;
+}
+
+.thumb:hover {
+	border: 1px solid #ffffff;
+}
+
+.thumbTitle {
+	position: absolute;
+    font-size: 10px;
+    background-color: rgba(0,0,0,.66);
+    padding:4px 0;
+    text-align: center;
+    width:100%;
+    bottom:0;
+}
+
+#nav {
+	width:100%;
+	position:relative;
+	display: block;
+	height:32.35294117%;
+	letter-spacing:5px;
+	color:#959493;
+	background-size: cover;
+	z-index: 4;
+}
+
+#nav ul {
+	height:100%;
+	position: relative;
+}
+
+#nav li {
+	vertical-align: middle;
+	position: relative;
+	height:100%;
+	display: inline-block;
+	padding: 14px 12px;
+	box-sizing:border-box;
+}
+
+#nav li a {
+	width:100%;
+	height:100%;
+	display:block;
+}
+
+#nav .home {
+	width: 14.545454545%;
+}
+
+#videoContainer {
+	display:none;
+	position:absolute;
+	width:100vw;
+	height:100vh;
+	top:0;
+	z-index: 5;
+	background-color: rgba(37, 37, 37, 1);
+	overflow: scroll;
+	opacity: 0;
+}
+
+#videoContainer .wrapper {
+	width:95%;
+	margin:25px auto;
+	height:100%;
+	position: relative;
+}
+
+#videoContainer .title {
+	line-height: 1.25em;
+}
+
+#videoContainer .title p {
+	text-align: right;
+ 	line-height: 1.25em;
+ 	text-align: right;
+ 	top:-1.25em;
+ 	position: relative;
+}
+
+#videoContainer .links {
+	text-align: right;
+	line-height: 1.25em;
+	margin-top: 1.25em;
+}
+
+#videoContainer .links a{
+	margin-left:10px;
+}
+
+#videoContainer .videoPlayer {
+	height: 70%;
+}
+
+.videoPlayer video {
+	width:100%;
+	height:100%;
+}
+
+#pageContainer {
+	display:none;
+	position:absolute;
+	width:100vw;
+	height:100vh;
+	top:0;
+	left:0;
+	z-index: 2;
+}
+
+#pageBackground {
+	background:#d8d8d8 url(../images/home.jpg) center right no-repeat;
+	position:relative;
+	width:100vw;
+	height:100vh;
+	background-size: cover;
+	opacity:0;
+}
+
+#topSlide {
+	position:absolute;
+	left:100vw;
+	width:100vw;
+	height:16.031746031%;
+	top:0;
+	background-color: rgba(0, 0, 0, .5);
+	z-index: 4;
+}
+
+#leftSlide {
+	position:absolute;
+	top:-100vh;
+	height:100vh;
+	width:20.202020202%;
+	display:block;
+	background-color: rgba(185, 188, 185, 1);
+	z-index: 3;
+}
+
+#bottomSlide {
+	position:absolute;
+	left:-100vw;
+	width:100vw;
+	height:36.19047619%;
+	bottom:0;
+	background-color: rgba(0, 0, 0, .5);
+	z-index: 4;
+}
+
+#pageContent {
+	position: absolute;
+	z-index: 4;
+	top:16.031746031%;
+	left:100vw;
+	background-color: rgba(126, 129, 129, 1);
+	color: #ffffff;
+	letter-spacing: 0px;
+    font-family: 'arial', 'Verdana' , sans-serif;
+    font-size: 14px;
+    text-align: left;
+    line-height: 1.25em;
+}
+
+#profileContent {
+	padding: 28px;
+	overflow: scroll;
+	height:85%;
+	box-sizing:border-box;
+}
+
+#profileSubNav {
+	position: relative;
+	bottom:0;
+	height:15%;
+}
+
+#profileSubNav a{
+	text-align: center;
+	float:left;
+	width:50%;
+	height:100%;
+	box-sizing:border-box;
+	margin:0;
+	padding: 12px 0;
+    font-family: 'Conv_LondonBetween' , sans-serif;
+    font-size: 16px;
+    letter-spacing: 6px;
+    cursor: pointer;
+}
+
+#press {
+	background-color: rgba(168, 170, 168, 1);
+	color: #3a3b3b;
+}
+
+#awards {
+	background-color: #babcb9;
+	color: #ffffff;
+}
+
+#profileSubNav a:hover {
+	color: #959493;
+    background: #404040;
+}
+
+#pageContent p{
+	margin-bottom:1.25em;
+}
+
+#notableContent {
+	height:100%;
+	position:relative;
+	background-color: rgba(68, 72, 72, 1);
+	box-sizing:border-box;
+	font-size: 14px;
+    font-family: 'Conv_LondonBetween' , sans-serif;
+    letter-spacing: 1px;
+}
+
+#notableContentClose {
+	position: absolute;
+    left: 97%;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+#notableContent .row {
+	background-color: rgba(130, 134, 135, 1);
+	width:100%;
+	padding:10px 20px;
+	margin:0 0 14px 0;
+	box-sizing:border-box;
+}
+
+#notableContent .row p{
+	margin-bottom:0;
+}
+
+#notableContent a {
+	height:100%;
+	width:100%;
+	display: block;
+	color: #ffffff;
+}
+
+#notableContent .row .title {
+	color:#000000;
+}
+
+#notableContent .left {
+	background: url(../images/backgrounds/sub-bg-notables.jpg) center center no-repeat;
+	background-size: cover;
+	width: 20.202020202%;
+	height:100%;
+	float:left;
+}
+
+#notableContent .right {
+	float: left;
+	width: 79.797979798%;
+	height:100%;
+	overflow: scroll;
+}
+
+#notableArticle {
+	position:fixed;
+	width: 79.797979798%;
+	left: 20.202020202%;
+	color: #000000;
+	border:10px solid transparent;
+	box-sizing:border-box;
+	z-index: 6;
+	font-size: 18px;
+	line-height: 24px;
+}
+
+#notableArticle b {
+	font-weight: bold;
+}
+
+#notableArticle p {
+	text-indent: 10px;
+	margin:18px 0;
+
+}
+
+#notableArticle .smaller {
+	font-size: 16px;
+}
+
+#articleHeader {
+	background-color: #000000;
+	color: #ffffff;
+	height:3em;
+	line-height: 3em;
+}
+
+#articleHeader p {
+	margin: 0;
+}
+
+#articleHeader .title {
+	display: inline-block;
+	width:80%;
+	float:left;
+	box-sizing:border-box;
+}
+
+#articleClose {
+	float:right;
+	width:15%;
+	line-height: 3em;
+	text-align: right;
+	cursor: pointer;
+	padding-right:10px;
+	box-sizing:border-box;
+}
+
+#articleInner {
+	height:100%;
+	overflow: scroll;
+	background-color: rgba(239, 239, 239, 1);
+	padding:10px;
+	box-sizing:border-box;
+	font-family: serif;
+}
+
+#articleInner i{
+	font-style: italic;
+}
+
+#accoladeContent {
+	height:100%;
+	position: relative;
+}
+
+#featuredAccolades {
+	top:18.888888888%;
+	height:40.634920634%;
+	position: relative;
+}
+
+#featuredAccolades .left {
+	width:20.202020202%;
+	float:left;
+}
+
+#featuredAccolades .right {
+	width: 79.797979798%;
+	background: url(../images/featured-accolades-bg.png);
+	background-repeat: repeat-x;
+	float:left;
+	height:100%;
+	text-align: center;
+}
+
+.featuredThumbWrapper {
+	width:81.64556962%;
+	height:100%;
+	margin:0 auto;
+}
+
+#featuredAccolades .thumb {
+	height:28.515625%;
+	width:27.131782945%;
+	top:21.484375%;
+	position: relative;
+}
+
+#featuredAccolades .featuredThumbTitle {
+	top:100%;
+	margin-top:10px;
+	position:relative;
+}
+
+#accolades {
+	top: 18.888888888%;
+	width:600%;
+	height:40.476190476%;
+	position:relative;
+}
+
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait){
+  #bgContainer, #videoContainer, #pageContainer  {
+    height: 1024px;
+  }
+}
+
+/** 
+ * iPad with landscape orientation.
+ */
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape){
+  #bgContainer, #videoContainer, #pageContainer  {
+    height: 768px;
+  }
+}
+
+
